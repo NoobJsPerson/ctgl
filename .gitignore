@@ -1,1 +1,4 @@
 .vscode/
+ctgl.o
+test.o
+test.exe

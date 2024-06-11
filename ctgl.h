@@ -9,15 +9,22 @@ extern "C" {
 
 typedef struct {
 	char symbol;
-	int backgroundColorRGB[3];
-	int foregroundColorRGB[3];
+	int backgroundRGB[3];
+	int foregroundRGB[3];
 } Pixel;
 
 typedef struct {
 	int width;
 	int height;
-	Pixel **pixels;
+	Pixel *pixels;
 } Canvas;
+
+void ctgl_fill_canvas(Canvas canvas, Pixel pixel);
+void ctgl_render_sync(Canvas canvas);
+void ctgl_set_backgroundRGB(Pixel *pixel, int rgb[3]);
+void ctgl_set_foregroundRGB(Pixel *pixel, int rgb[3]);
+void ctgl_reset_terminal_color();
+
 
 #ifdef __cplusplus
 }
