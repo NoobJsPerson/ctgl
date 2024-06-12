@@ -19,6 +19,7 @@ typedef struct {
 	Pixel *pixels;
 } Canvas;
 
+void ctgl_hide_cursor();
 void ctgl_fill_canvas(Canvas canvas, Pixel pixel);
 void ctgl_render_sync(Canvas canvas);
 void ctgl_set_backgroundRGB(Pixel *pixel, int rgb[3]);
