@@ -38,17 +38,21 @@ void ctgl_fill_canvas(Canvas canvas, Pixel pixel)
 		}
 	}
 }
-void ctgl_reset_terminal_color()
+inline void ctgl_reset_terminal_color()
 {
 	printf(
 		"\033[38;2;255;255;255m"
-		"\033[48;2;0;0;0m"
-		"\033[?25h");
+		"\033[48;2;0;0;0m");
 }
 
 inline void ctgl_hide_cursor()
 {
 	printf("\033[?25l");
+}
+
+inline void ctgl_show_cursor()
+{
+	printf("\033[?25h");
 }
 
 void ctgl_render_sync(Canvas canvas)
@@ -67,6 +71,7 @@ void ctgl_render_sync(Canvas canvas)
 				canvas.pixels[i * canvas.width + j].backgroundRGB[0], canvas.pixels[i * canvas.width + j].backgroundRGB[1], canvas.pixels[i * canvas.width + j].backgroundRGB[2],
 				canvas.pixels[i * canvas.width + j].symbol);
 		}
+		ctgl_reset_terminal_color();
 		printf("\n");
 	}
 }
