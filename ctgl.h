@@ -14,8 +14,8 @@ typedef struct Pixel {
 } Pixel;
 
 typedef struct Canvas {
-	int height;
 	int width;
+	int height;
 	Pixel *pixels;
 } Canvas;
 
