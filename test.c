@@ -1,9 +1,8 @@
 #include "ctgl.h"
 
 int main() {
-	Pixel pixels[10 * 10];
 	Pixel underscorePixel = {'_', {0,0,0}, {255,255,255}};
-	Canvas canvas = {10, 10, pixels};
+	Canvas canvas = ctgl_create_canvas(10,10);
 	ctgl_fill_canvas(canvas, underscorePixel);
 	for(int i = 0; i < 100; i++){
 		ctgl_set_backgroundRGB(canvas.pixels + i, (int[3]) {255,255,255});

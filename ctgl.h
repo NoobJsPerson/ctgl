@@ -7,18 +7,19 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-typedef struct {
+typedef struct Pixel {
 	char symbol;
 	int backgroundRGB[3];
 	int foregroundRGB[3];
 } Pixel;
 
-typedef struct {
-	int width;
+typedef struct Canvas {
 	int height;
+	int width;
 	Pixel *pixels;
 } Canvas;
 
+Canvas ctgl_create_canvas(int height, int width);
 void ctgl_hide_cursor();
 void ctgl_fill_canvas(Canvas canvas, Pixel pixel);
 void ctgl_render_sync(Canvas canvas);

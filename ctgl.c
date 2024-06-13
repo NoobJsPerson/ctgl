@@ -1,6 +1,21 @@
+/*
+#############################################
+#				   CTGL						#
+#	A graphics library for the terminal		#
+#		Made by Amine ElBaghdadi			#
+#		@noobjsperson on GitHub				#
+#############################################
+*/
+
 #include "ctgl.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+Canvas ctgl_create_canvas(int height, int width) {
+	Pixel *pixels = malloc(height * width * sizeof(Pixel));
+	Canvas canvas = {height, width, pixels};
+	return canvas;
+}
 
 void ctgl_set_backgroundRGB(Pixel *pixel, int rgb[3])
 {
