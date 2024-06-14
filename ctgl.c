@@ -55,7 +55,7 @@ void ctgl_set_foregroundRGB(Pixel *pixel, int rgb[3])
 
 void ctgl_fill_canvas(Canvas canvas, Pixel pixel)
 {
-	for (int i = 0; i < canvas.height * canvas.width; i++)
+	for (int i = 0; i < canvas.height; i++)
 	{
 		for (int j = 0; j < canvas.width; j++)
 		{
