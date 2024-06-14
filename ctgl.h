@@ -21,7 +21,8 @@ typedef struct Canvas {
 
 Canvas ctgl_create_canvas(int height, int width);
 void ctgl_hide_cursor();
-void ctgl_hide_cursor();
+void ctgl_show_cursor();
+void ctgl_clear_screen();
 void ctgl_fill_canvas(Canvas canvas, Pixel pixel);
 void ctgl_render_sync(Canvas canvas);
 void ctgl_set_backgroundRGB(Pixel *pixel, int rgb[3]);

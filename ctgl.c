@@ -11,6 +11,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef _WIN32
+inline void ctgl_clear_screen() {
+	system("cls");
+}
+#else
+inline void ctgl_clear_screen() {
+		printf("\033[1;1H\033[2J");
+}
+#endif
+
 Canvas ctgl_create_canvas(int height, int width) {
 	Pixel *pixels = malloc(height * width * sizeof(Pixel));
 	Canvas canvas = {height, width, pixels};
@@ -45,6 +55,8 @@ inline void ctgl_reset_terminal_color()
 		"\033[48;2;0;0;0m");
 }
 
+
+
 inline void ctgl_hide_cursor()
 {
 	printf("\033[?25l");
@@ -57,7 +69,7 @@ inline void ctgl_show_cursor()
 
 void ctgl_render_sync(Canvas canvas)
 {
-	system("cls");
+	ctgl_clear_screen();
 	ctgl_hide_cursor();
 	for (int i = 0; i < canvas.height; i++)
 	{
