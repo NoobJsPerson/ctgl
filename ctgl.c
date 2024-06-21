@@ -3,7 +3,7 @@
 #                  CTGL                     #
 #    A graphics library for the terminal    #
 #         Made by Amine ElBaghdadi          #
-#         @noobjsperson on GitHub	        #
+#         @noobjsperson on GitHub           #
 #############################################
 */
 
