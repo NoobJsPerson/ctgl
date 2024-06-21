@@ -10,6 +10,7 @@
 #include "ctgl.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -47,10 +48,25 @@ void ctgl_set_backgroundRGB(Pixel *pixel, int rgb[3])
 	for (int i = 0; i < 3; i++)
 		pixel->backgroundRGB[i] = rgb[i];
 }
+
 void ctgl_set_foregroundRGB(Pixel *pixel, int rgb[3])
 {
 	for (int i = 0; i < 3; i++)
 		pixel->foregroundRGB[i] = rgb[i];
+}
+
+inline void ctgl_set_symbol(Pixel *pixel, char symbol) {
+	pixel->symbol = symbol;
+}
+
+inline void ctgl_set_pixel(Canvas canvas, Pixel pixel, int x, int y) {
+	canvas.pixels[x + y * canvas.width] = pixel;
+}
+
+void ctgl_set_text(Canvas canvas, char *str, int x, int y) {
+	for (int i = 0; i < strlen(str); i++) {
+		canvas.pixels[i + x + y * canvas.width].symbol = str[i];
+	}
 }
 
 void ctgl_fill_canvas(Canvas canvas, Pixel pixel)
@@ -76,6 +92,29 @@ inline void ctgl_show_cursor()
 {
 	printf("\033[?25h");
 }
+
+// Boilerplate for Bresenham Line Plotting Algorithm
+// void plotBresenhamLineLow(Canvas canvas, Pixel pixel, int x0, int y0, int x1, int y1) {
+// 	int dx = x1 - x0;
+//     int dy = y1 - y0;
+//     int yi = 1;
+//     if (dy < 0) {
+//         yi = -1;
+//         dy = -dy;
+// 	}
+//     int D = (2 * dy) - dx;
+//     int y = y0;
+
+// 	for (int x = x0; x <= x1; x++) {
+// 		canvas.pixels[x + y * canvas.width] = pixel; // plot(x, y);
+//         if (D > 0) {
+//             y = y + yi;
+//             D = D + (2 * (dy - dx));
+//         } else {
+//             D = D + 2*dy;
+//         }
+// 	}
+// }
 
 void ctgl_render_sync(Canvas canvas)
 {
