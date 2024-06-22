@@ -36,10 +36,10 @@ inline void ctgl_clear_screen()
 }
 #endif
 
-Canvas ctgl_create_canvas(int height, int width)
+Canvas ctgl_create_canvas(int width, int height)
 {
 	Pixel *pixels = malloc(height * width * sizeof(Pixel));
-	Canvas canvas = {height, width, pixels};
+	Canvas canvas = {width, height, pixels};
 	return canvas;
 }
 
@@ -96,9 +96,19 @@ inline void ctgl_show_cursor()
 
 // Implements the Naive Line Drawing Algorithm
 void ctgl_draw_line_naive(Canvas canvas, Pixel pixel, int x1, int y1, int x2, int y2) {
-	// int usedY1 = canvas.height - y1 -1;
-	// int usedY2 = canvas.height - y2 -1;
+	if(x2 < x1) {
+		int temp = x2;
+		x2 = x1;
+		x1 = temp;
+	}
 	int dx = x2 - x1;
+	if(dx == 0) {
+		for(int y = y1; y <= y2; y++) {
+			// in this case x1 == x2 because their difference is 0
+			ctgl_set_pixel(canvas, pixel, x1, y);
+		}
+		return;
+	}
 	int dy = y2 - y1;
 	int y;
 
@@ -139,24 +149,6 @@ void ctgl_render_sync(Canvas canvas)
 	{
 		for (int j = 0; j < canvas.width; j++)
 		{
-			// This code is for not setting the background and foreground rgbs if it has the same value as the last pixel's 
-			// I might seperate this into its own function. I just don't know that to name it
-
-			// if (j > 0 
-			// 	&& canvas.pixels[i * canvas.width + j].foregroundRGB[0] == canvas.pixels[i * canvas.width + j - 1].foregroundRGB[0] 
-			// 	&& canvas.pixels[i * canvas.width + j].foregroundRGB[1] == canvas.pixels[i * canvas.width + j - 1].foregroundRGB[1] 
-			// 	&& canvas.pixels[i * canvas.width + j].foregroundRGB[2] == canvas.pixels[i * canvas.width + j - 1].foregroundRGB[2] 
-			// 	&& canvas.pixels[i * canvas.width + j].backgroundRGB[0] == canvas.pixels[i * canvas.width + j - 1].backgroundRGB[0] 
-			// 	&& canvas.pixels[i * canvas.width + j].backgroundRGB[1] == canvas.pixels[i * canvas.width + j - 1].backgroundRGB[1] 
-			// 	&& canvas.pixels[i * canvas.width + j].backgroundRGB[2] == canvas.pixels[i * canvas.width + j - 1].backgroundRGB[2])
-			// {
-			// 	printf(
-			// 		"%c",				  // print character
-			// 		canvas.pixels[i * canvas.width + j].symbol);
-			// } else {
-			
-			// Would like to make a variable to hold the current pixel we are trying to print, but that's too slow
-
 			printf(
 				"\033[38;2;%d;%d;%dm" // set foreground color
 				"\033[48;2;%d;%d;%dm" // set background color
@@ -164,7 +156,6 @@ void ctgl_render_sync(Canvas canvas)
 				canvas.pixels[i * canvas.width + j].foregroundRGB[0], canvas.pixels[i * canvas.width + j].foregroundRGB[1], canvas.pixels[i * canvas.width + j].foregroundRGB[2],
 				canvas.pixels[i * canvas.width + j].backgroundRGB[0], canvas.pixels[i * canvas.width + j].backgroundRGB[1], canvas.pixels[i * canvas.width + j].backgroundRGB[2],
 				canvas.pixels[i * canvas.width + j].symbol);
-			// }
 		}
 		ctgl_reset_terminal_color();
 		printf("\n");

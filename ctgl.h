@@ -19,7 +19,7 @@ typedef struct _Canvas {
 	Pixel *pixels;
 } Canvas;
 
-Canvas ctgl_create_canvas(int height, int width);
+Canvas ctgl_create_canvas(int width, int height);
 void ctgl_hide_cursor();
 void ctgl_show_cursor();
 void ctgl_clear_screen();
