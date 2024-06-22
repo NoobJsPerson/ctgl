@@ -88,9 +88,24 @@ inline void ctgl_hide_cursor()
 	printf("\033[?25l");
 }
 
+// Shows the cursor
 inline void ctgl_show_cursor()
 {
 	printf("\033[?25h");
+}
+
+// Implements the Naive Line Drawing Algorithm
+void ctgl_draw_line_naive(Canvas canvas, Pixel pixel, int x1, int y1, int x2, int y2) {
+	// int usedY1 = canvas.height - y1 -1;
+	// int usedY2 = canvas.height - y2 -1;
+	int dx = x2 - x1;
+	int dy = y2 - y1;
+	int y;
+
+	for(int x = x1; x <= x2; x++) {
+		y = y1 + dy * (x - x1) / dx;
+		ctgl_set_pixel(canvas, pixel, x, y);
+	}
 }
 
 // Boilerplate for Bresenham Line Plotting Algorithm
