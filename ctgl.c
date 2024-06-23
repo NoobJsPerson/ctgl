@@ -14,61 +14,64 @@
 
 #ifdef _WIN32
 #include <windows.h>
-
+// Resets cursor position to (1,1)
 inline void ctgl_reset_cursor_pos()
 {
 	HANDLE hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
 	if (hStdOut == INVALID_HANDLE_VALUE) return;
 	SetConsoleCursorPosition( hStdOut, (COORD) {0,0} );
 }
+// Clears the screen
 inline void ctgl_clear_screen()
 {
 	system("cls");
 }
 #else
+// Resets cursor position to (1,1)
 inline void ctgl_reset_cursor_pos()
 {
 	printf("\033[1;1H");
 }
+// Clears the screen
 inline void ctgl_clear_screen()
 {
 	printf("\033[1;1H\033[2J");
 }
 #endif
-
+// Creates a canvas with the given width and height
 Canvas ctgl_create_canvas(int width, int height)
 {
 	Pixel *pixels = malloc(height * width * sizeof(Pixel));
 	Canvas canvas = {width, height, pixels};
 	return canvas;
 }
-
+// Sets the background rgb values for a given pixel
 void ctgl_set_backgroundRGB(Pixel *pixel, int rgb[3])
 {
 	for (int i = 0; i < 3; i++)
 		pixel->backgroundRGB[i] = rgb[i];
 }
-
+// Sets the foreground rgb values for a given pixel
 void ctgl_set_foregroundRGB(Pixel *pixel, int rgb[3])
 {
 	for (int i = 0; i < 3; i++)
 		pixel->foregroundRGB[i] = rgb[i];
 }
-
+// Sets the symbol for a given pixel
 inline void ctgl_set_symbol(Pixel *pixel, char symbol) {
 	pixel->symbol = symbol;
 }
-
+// Sets a given pixel on a given canvas
 inline void ctgl_set_pixel(Canvas canvas, Pixel pixel, int x, int y) {
 	canvas.pixels[x + y * canvas.width] = pixel;
 }
-
+// Sets a text in the given canvas starting from the given x and y coordinates
 void ctgl_set_text(Canvas canvas, char *str, int x, int y) {
 	for (int i = 0; i < strlen(str); i++) {
 		canvas.pixels[i + x + y * canvas.width].symbol = str[i];
 	}
 }
-
+// Fills the given canvas with the given pixel
 void ctgl_fill_canvas(Canvas canvas, Pixel pixel)
 {
 	for (int i = 0; i < canvas.height * canvas.width; i++)
@@ -76,13 +79,14 @@ void ctgl_fill_canvas(Canvas canvas, Pixel pixel)
 			canvas.pixels[i] = pixel;
 	}
 }
+// Resets terminal color to white foreground and black background
 inline void ctgl_reset_terminal_color()
 {
 	printf(
 		"\033[38;2;255;255;255m"
 		"\033[48;2;0;0;0m");
 }
-
+// Hides the cursor
 inline void ctgl_hide_cursor()
 {
 	printf("\033[?25l");
@@ -140,7 +144,7 @@ void ctgl_draw_line_naive(Canvas canvas, Pixel pixel, int x1, int y1, int x2, in
 //         }
 // 	}
 // }
-
+// Renders a given canvas synchronously
 void ctgl_render_sync(Canvas canvas)
 {
 	ctgl_reset_cursor_pos();
