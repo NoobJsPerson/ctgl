@@ -1,5 +1,5 @@
 # ctgl
-#### A graphical library for terminals written in C (WIP)
+### A graphical library for terminals written in C (WIP)
 This is a simple graphical library for terminals written in C that aims to facilitate drawing lines and shapes on terminal window. It could be used to make simple animations and terminal games.<br>
 It is still a work in progress but in its current state it has the following features:
 - Implements a Canvas with a set width, height and number of pixels that you can manipulate directly or use library functions to do so
