@@ -21,6 +21,7 @@ inline void ctgl_reset_cursor_pos()
 	if (hStdOut == INVALID_HANDLE_VALUE) return;
 	SetConsoleCursorPosition( hStdOut, (COORD) {0,0} );
 }
+
 // Clears the screen
 inline void ctgl_clear_screen()
 {
@@ -32,12 +33,14 @@ inline void ctgl_reset_cursor_pos()
 {
 	printf("\033[1;1H");
 }
+
 // Clears the screen
 inline void ctgl_clear_screen()
 {
 	printf("\033[1;1H\033[2J");
 }
 #endif
+
 // Creates a canvas with the given width and height
 Canvas ctgl_create_canvas(int width, int height)
 {
@@ -45,6 +48,14 @@ Canvas ctgl_create_canvas(int width, int height)
 	Canvas canvas = {width, height, pixels};
 	return canvas;
 }
+
+// Sets up CTGL to work correctly (make sure to call this before ctgl_render_sync)
+void ctgl_init() {
+	ctgl_clear_screen();
+	ctgl_reset_cursor_pos();
+	ctgl_hide_cursor();
+};
+
 // Sets the background rgb values for a given pixel
 void ctgl_set_backgroundRGB(Pixel *pixel, int rgb[3])
 {
@@ -66,7 +77,7 @@ inline void ctgl_set_pixel(Canvas canvas, Pixel pixel, int x, int y) {
 	canvas.pixels[x + y * canvas.width] = pixel;
 }
 // Sets a text in the given canvas starting from the given x and y coordinates
-void ctgl_set_text(Canvas canvas, char *str, int x, int y) {
+void ctgl_set_text(Canvas canvas, const char *str, int x, int y) {
 	for (int i = 0; i < strlen(str); i++) {
 		canvas.pixels[i + x + y * canvas.width].symbol = str[i];
 	}
@@ -98,52 +109,89 @@ inline void ctgl_show_cursor()
 	printf("\033[?25h");
 }
 
-// Implements the Naive Line Drawing Algorithm
-void ctgl_draw_line_naive(Canvas canvas, Pixel pixel, int x1, int y1, int x2, int y2) {
-	if(x2 < x1) {
-		int temp = x2;
-		x2 = x1;
-		x1 = temp;
-	}
-	int dx = x2 - x1;
-	if(dx == 0) {
-		for(int y = y1; y <= y2; y++) {
-			// in this case x1 == x2 because their difference is 0
-			ctgl_set_pixel(canvas, pixel, x1, y);
-		}
-		return;
-	}
-	int dy = y2 - y1;
-	int y;
+void ctgl_draw_vertical_line(Canvas canvas, Pixel pixel, int x, int y0, int y1) {
+	for(int y = y0; y <= y1; y++) ctgl_set_pixel(canvas, pixel, x, y);
+};
 
-	for(int x = x1; x <= x2; x++) {
-		y = y1 + dy * (x - x1) / dx;
-		ctgl_set_pixel(canvas, pixel, x, y);
+void ctgl_draw_horizontal_line(Canvas canvas, Pixel pixel, int y, int x0, int x1) {
+	for(int x = x0; x <= x1; x++) ctgl_set_pixel(canvas, pixel, x, y);
+};
+
+// Boilerplate for Bresenham Line Plotting Algorithm
+void ctgl_draw_line_bresenham_low(Canvas canvas, Pixel pixel, int x0, int y0, int x1, int y1) {
+	int dx = x1 - x0;
+    int dy = y1 - y0;
+    int yi = 1;
+    if (dy < 0) {
+        yi = -1;
+        dy = -dy;
+	}
+    int D = (2 * dy) - dx;
+    int y = y0;
+
+	for (int x = x0; x <= x1; x++) {
+		ctgl_set_pixel(canvas, pixel, x, y); // plot(x, y);
+        if (D > 0) {
+            y = y + yi;
+            D = D + (2 * (dy - dx));
+        } else {
+            D = D + 2*dy;
+        }
 	}
 }
 
-// Boilerplate for Bresenham Line Plotting Algorithm
-// void plotBresenhamLineLow(Canvas canvas, Pixel pixel, int x0, int y0, int x1, int y1) {
-// 	int dx = x1 - x0;
-//     int dy = y1 - y0;
-//     int yi = 1;
-//     if (dy < 0) {
-//         yi = -1;
-//         dy = -dy;
-// 	}
-//     int D = (2 * dy) - dx;
-//     int y = y0;
+void ctgl_draw_line_bresenham_high(Canvas canvas, Pixel pixel, int x0, int y0, int x1, int y1) {
+	int dx = x1 - x0;
+    int dy = y1 - y0;
+    int xi = 1;
+    if (dx < 0) {
+        xi = -1;
+        dx = -dx;
+	}
+    int D = (2 * dx) - dy;
+    int x = x0;
 
-// 	for (int x = x0; x <= x1; x++) {
-// 		canvas.pixels[x + y * canvas.width] = pixel; // plot(x, y);
-//         if (D > 0) {
-//             y = y + yi;
-//             D = D + (2 * (dy - dx));
-//         } else {
-//             D = D + 2*dy;
-//         }
-// 	}
-// }
+	for (int y = y0; x <= y1; y++) {
+		ctgl_set_pixel(canvas, pixel, x, y); // plot(x, y);
+        if (D > 0) {
+            x = x + xi;
+            D = D + (2 * (dx - dy));
+        } else {
+            D = D + 2*dx;
+        }
+	}
+}
+
+void ctgl_draw_line_bresenham(Canvas canvas, Pixel pixel, int x0, int y0, int x1, int y1) {
+	if (abs(y1 - y0) < abs(x1 - x0)) {
+		if (x0 > x1) ctgl_draw_line_bresenham_low(canvas, pixel, x1, y1, x0, y0);
+		else ctgl_draw_line_bresenham_low(canvas, pixel, x0, y0, x1, y1);
+	} else {
+		if (y0 > y1) ctgl_draw_line_bresenham_high(canvas, pixel, x1, y1, x0, y0);
+        else ctgl_draw_line_bresenham_high(canvas, pixel, x0, y0, x1, y1);
+	}
+}
+
+// plotLineHigh(x0, y0, x1, y1)
+//     dx = x1 - x0
+//     dy = y1 - y0
+//     xi = 1
+//     if dx < 0
+//         xi = -1
+//         dx = -dx
+//     end if
+//     D = (2 * dx) - dy
+//     x = x0
+
+//     for y from y0 to y1
+//         plot(x, y)
+//         if D > 0
+//             x = x + xi
+//             D = D + (2 * (dx - dy))
+//         else
+//             D = D + 2*dx
+//         end if
+
 // Renders a given canvas synchronously
 void ctgl_render_sync(Canvas canvas)
 {
