@@ -2,4 +2,6 @@
 ctgl.o
 test.o
 test.exe
+dvd.o
+dvd.exe
 test

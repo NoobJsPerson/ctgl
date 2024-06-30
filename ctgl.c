@@ -50,9 +50,9 @@ Canvas ctgl_create_canvas(int width, int height)
 }
 
 // Creates a canvas with the given width and height
-inline Pixel ctgl_create_pixel(char symbol, int backgroundRGB[3], int foregroundRGB[3])
+inline Pixel ctgl_create_pixel(char symbol, int bRed, int bGreen, int bBlue, int fRed, int fGreen, int fBlue)
 {
-	Pixel pixel = {symbol, backgroundRGB, foregroundRGB};
+	Pixel pixel = {symbol, {bRed, bGreen, bBlue}, {fRed, fGreen, fBlue}};
 	return pixel;
 }
 
@@ -116,10 +116,20 @@ inline void ctgl_show_cursor()
 }
 
 void ctgl_draw_vertical_line(Canvas canvas, Pixel pixel, int x, int y0, int y1) {
+	if (y1 < y0) {
+		int temp = y1;
+		y1 = y0;
+		y0 = temp;
+	}
 	for(int y = y0; y <= y1; y++) ctgl_set_pixel(canvas, pixel, x, y);
 };
 
 void ctgl_draw_horizontal_line(Canvas canvas, Pixel pixel, int y, int x0, int x1) {
+	if (x1 < x0) {
+		int temp = x1;
+		x1 = x0;
+		x0 = temp;
+	}
 	for(int x = x0; x <= x1; x++) ctgl_set_pixel(canvas, pixel, x, y);
 };
 
@@ -199,7 +209,7 @@ void ctgl_draw_line_bresenham(Canvas canvas, Pixel pixel, int x0, int y0, int x1
 //         end if
 
 // Renders a given canvas synchronously
-void ctgl_render_sync(Canvas canvas)
+void ctgl_render_canvas(Canvas canvas)
 {
 	ctgl_reset_cursor_pos();
 	for (int i = 0; i < canvas.height; i++)
@@ -218,3 +228,4 @@ void ctgl_render_sync(Canvas canvas)
 		printf("\n");
 	}
 }
+
