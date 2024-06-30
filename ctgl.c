@@ -49,10 +49,16 @@ Canvas ctgl_create_canvas(int width, int height)
 	return canvas;
 }
 
+// Creates a canvas with the given width and height
+inline Pixel ctgl_create_pixel(char symbol, int backgroundRGB[3], int foregroundRGB[3])
+{
+	Pixel pixel = {symbol, backgroundRGB, foregroundRGB};
+	return pixel;
+}
+
 // Sets up CTGL to work correctly (make sure to call this before ctgl_render_sync)
 void ctgl_init() {
 	ctgl_clear_screen();
-	ctgl_reset_cursor_pos();
 	ctgl_hide_cursor();
 };
 
@@ -196,7 +202,6 @@ void ctgl_draw_line_bresenham(Canvas canvas, Pixel pixel, int x0, int y0, int x1
 void ctgl_render_sync(Canvas canvas)
 {
 	ctgl_reset_cursor_pos();
-	ctgl_hide_cursor();
 	for (int i = 0; i < canvas.height; i++)
 	{
 		for (int j = 0; j < canvas.width; j++)
