@@ -229,3 +229,32 @@ void ctgl_render_canvas(Canvas canvas)
 	}
 }
 
+void ctgl_render_canvas_vsync(Canvas canvas)
+{
+	// 31 is the length of the char array required to print one pixel
+	// 33 it the length of the char array required to reset the terminal color and return to a new line
+	// 1 is for the null terminator '\0'
+	char result[31 * canvas.width * canvas.height + 33 * canvas.height + 1];
+	result[0] = 0;
+	ctgl_reset_cursor_pos();
+	for (int i = 0; i < canvas.height; i++)
+	{
+		for (int j = 0; j < canvas.width; j++)
+		{
+			char temp[31] = {0};
+			sprintf(
+				temp,
+				"\033[38;2;%d;%d;%dm" // set foreground color
+				"\033[48;2;%d;%d;%dm" // set background color
+				"%c",				  // print character
+				canvas.pixels[i * canvas.width + j].foregroundRGB[0], canvas.pixels[i * canvas.width + j].foregroundRGB[1], canvas.pixels[i * canvas.width + j].foregroundRGB[2],
+				canvas.pixels[i * canvas.width + j].backgroundRGB[0], canvas.pixels[i * canvas.width + j].backgroundRGB[1], canvas.pixels[i * canvas.width + j].backgroundRGB[2],
+				canvas.pixels[i * canvas.width + j].symbol);
+			strcat(result, temp);
+		}
+		strcat(result,"\033[38;2;255;255;255m" // reset the foreground color to white
+			"\033[48;2;0;0;0m" // // reset the background color to black
+			"\n"); // new line
+	}
+	printf(result);
+}

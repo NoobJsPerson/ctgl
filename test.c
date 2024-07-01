@@ -20,10 +20,7 @@ int main() {
 	ctgl_set_text(canvas, morocco, (canvas.width-1)/2 - (strlen(morocco)-1)/2, canvas.height-1 );
 	
 
-	ctgl_render_canvas(canvas);
-	ctgl_render_canvas(canvas);
-	ctgl_render_canvas(canvas);
-	ctgl_render_canvas(canvas);
+	ctgl_render_canvas_vsync(canvas);
 	ctgl_reset_terminal_color();
 	float endTime = (float)clock()/CLOCKS_PER_SEC;
 	printf("Test finished in: %f seconds\n", endTime - startTime);

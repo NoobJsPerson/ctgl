@@ -32,6 +32,7 @@ void ctgl_reset_terminal_color();
 
 void ctgl_fill_canvas(Canvas canvas, Pixel pixel);
 void ctgl_render_canvas(Canvas canvas);
+void ctgl_render_canvas_vsync(Canvas canvas);
 
 void ctgl_set_backgroundRGB(Pixel *pixel, int rgb[3]);
 void ctgl_set_foregroundRGB(Pixel *pixel, int rgb[3]);
