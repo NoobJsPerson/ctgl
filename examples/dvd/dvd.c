@@ -2,7 +2,7 @@
 
 int main () {
 	Canvas canvas = ctgl_create_canvas(40,10);
-	Pixel underscorePixel = ctgl_create_pixel('_', 0,0,0,255,255,255);
+	Pixel underscorePixel = {'_',{0,0,0}, {255,255,255}};
 	int x = 0;
 	int y = 0;
 	int dx = 1;
@@ -14,7 +14,7 @@ int main () {
 	while(1) {
 		ctgl_fill_canvas(canvas, underscorePixel);
 		ctgl_set_text(canvas, "DVD", x, y);
-		ctgl_render_canvas(canvas);
+		ctgl_render_canvas_vsync(canvas);
 		if(x == 0) {
 			dx = 1;
 		} else if (x == canvas.width - 3) {

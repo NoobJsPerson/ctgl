@@ -231,10 +231,10 @@ void ctgl_render_canvas(Canvas canvas)
 
 void ctgl_render_canvas_vsync(Canvas canvas)
 {
-	// 31 is the length of the char array required to print one pixel
+	// 33 is the length of the char array required to print one pixel
 	// 33 it the length of the char array required to reset the terminal color and return to a new line
 	// 1 is for the null terminator '\0'
-	char result[31 * canvas.width * canvas.height + 33 * canvas.height + 1];
+	char result[33 * canvas.height * (canvas.width + 1)];
 	result[0] = 0;
 	ctgl_reset_cursor_pos();
 	for (int i = 0; i < canvas.height; i++)
