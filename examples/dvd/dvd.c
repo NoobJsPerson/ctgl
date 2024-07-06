@@ -14,7 +14,7 @@ int main () {
 	while(1) {
 		ctgl_fill_canvas(canvas, underscorePixel);
 		ctgl_set_text(canvas, "DVD", x, y);
-		ctgl_render_canvas_vsync(canvas);
+		ctgl_render_canvas(canvas);
 		if(x == 0) {
 			dx = 1;
 		} else if (x == canvas.width - 3) {

@@ -49,6 +49,10 @@ Canvas ctgl_create_canvas(int width, int height)
 	return canvas;
 }
 
+void ctgl_free_canvas(Canvas canvas) {
+	free(canvas.pixels);
+}
+
 // Creates a canvas with the given width and height
 inline Pixel ctgl_create_pixel(char symbol, int bRed, int bGreen, int bBlue, int fRed, int fGreen, int fBlue)
 {
@@ -208,32 +212,15 @@ void ctgl_draw_line_bresenham(Canvas canvas, Pixel pixel, int x0, int y0, int x1
 //             D = D + 2*dx
 //         end if
 
-// Renders a given canvas synchronously
-void ctgl_render_canvas(Canvas canvas)
-{
-	ctgl_reset_cursor_pos();
-	for (int i = 0; i < canvas.height; i++)
-	{
-		for (int j = 0; j < canvas.width; j++)
-		{
-			printf(
-				"\033[38;2;%d;%d;%dm" // set foreground color
-				"\033[48;2;%d;%d;%dm" // set background color
-				"%c",				  // print character
-				canvas.pixels[i * canvas.width + j].foregroundRGB[0], canvas.pixels[i * canvas.width + j].foregroundRGB[1], canvas.pixels[i * canvas.width + j].foregroundRGB[2],
-				canvas.pixels[i * canvas.width + j].backgroundRGB[0], canvas.pixels[i * canvas.width + j].backgroundRGB[1], canvas.pixels[i * canvas.width + j].backgroundRGB[2],
-				canvas.pixels[i * canvas.width + j].symbol);
-		}
-		ctgl_reset_terminal_color();
-		printf("\n");
-	}
-}
 
-void ctgl_render_canvas_vsync(Canvas canvas)
+// renders the given canvas.
+void ctgl_render_canvas(Canvas canvas)
 {
 	// 33 is the length of the char array required to print one pixel
 	// 33 it the length of the char array required to reset the terminal color and return to a new line
 	// 1 is for the null terminator '\0'
+	// This used to be `char result[33 * canvas.height * canvas.width + 33 * canvas.height];`
+	// But I changed it to this for one less dereference.
 	char result[33 * canvas.height * (canvas.width + 1)];
 	result[0] = 0;
 	ctgl_reset_cursor_pos();

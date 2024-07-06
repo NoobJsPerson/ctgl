@@ -1,5 +1,5 @@
 test: test.o ctgl.o
-		gcc -o -g test test.o ctgl.o
+		gcc -o test  -g test.o ctgl.o
 		@echo now you can run the command
 test.o: test.c
 		gcc -c -g test.c
