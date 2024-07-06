@@ -49,7 +49,9 @@ Canvas ctgl_create_canvas(int width, int height)
 	return canvas;
 }
 
-void ctgl_free_canvas(Canvas canvas) {
+
+// Frees the given canvas (Important if you want to free the memory allocated by a canvas returned by ctgl_create_canvas)
+inline void ctgl_free_canvas(Canvas canvas) {
 	free(canvas.pixels);
 }
 
