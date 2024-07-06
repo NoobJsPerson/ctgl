@@ -9,8 +9,8 @@ extern "C" {
 
 typedef struct _Pixel {
 	char symbol;
-	int backgroundRGB[3];
-	int foregroundRGB[3];
+	short backgroundRGB[3];
+	short foregroundRGB[3];
 } Pixel;
 
 typedef struct _Canvas {

@@ -54,7 +54,7 @@ void ctgl_free_canvas(Canvas canvas) {
 }
 
 // Creates a canvas with the given width and height
-inline Pixel ctgl_create_pixel(char symbol, int bRed, int bGreen, int bBlue, int fRed, int fGreen, int fBlue)
+inline Pixel ctgl_create_pixel(char symbol, short bRed, short bGreen, short bBlue, short fRed, short fGreen, short fBlue)
 {
 	Pixel pixel = {symbol, {bRed, bGreen, bBlue}, {fRed, fGreen, fBlue}};
 	return pixel;

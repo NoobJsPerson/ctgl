@@ -2,7 +2,8 @@
 
 int main () {
 	Canvas canvas = ctgl_create_canvas(40,10);
-	Pixel underscorePixel = {'_',{0,0,0}, {255,255,255}};
+	// Pixel underscorePixel = {'_',{0,0,0}, {255,255,255}};
+	Pixel underscorePixel = ctgl_create_pixel('_', 0, 0, 0, 255, 255 ,255);
 	int x = 0;
 	int y = 0;
 	int dx = 1;
