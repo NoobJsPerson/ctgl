@@ -19,7 +19,7 @@ typedef struct _Canvas {
 	Pixel *pixels;
 } Canvas;
 
-Pixel ctgl_create_pixel(char symbol, int bRed, int bGreen, int bBlue, int fRed, int fGreen, int fBlue);
+Pixel ctgl_create_pixel(char symbol, short bRed, short bGreen, short bBlue, short fRed, short fGreen, short fBlue);
 Canvas ctgl_create_canvas(int width, int height);
 
 void ctgl_init();

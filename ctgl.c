@@ -60,7 +60,7 @@ inline Pixel ctgl_create_pixel(char symbol, short bRed, short bGreen, short bBlu
 	return pixel;
 }
 
-// Sets up CTGL to work correctly (make sure to call this before ctgl_render_sync)
+// Sets up CTGL to work correctly (make sure to call this before ctgl_render_canvas)
 void ctgl_init() {
 	ctgl_clear_screen();
 	ctgl_hide_cursor();
