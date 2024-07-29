@@ -27,7 +27,7 @@ void ctgl_hide_cursor();
 void ctgl_show_cursor();
 void ctgl_clear_screen();
 void ctgl_reset_cursor_pos();
-void ctgl_reset_terminal_color();
+void ctgl_reset_terminal_modes();
 
 
 void ctgl_fill_canvas(Canvas canvas, Pixel pixel);

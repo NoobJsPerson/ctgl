@@ -109,12 +109,10 @@ void ctgl_fill_canvas(Canvas canvas, Pixel pixel)
 			canvas.pixels[i] = pixel;
 	}
 }
-// Resets terminal color to white foreground and black background
-inline void ctgl_reset_terminal_color()
+// Resets all terminal modes (styles and colors)
+inline void ctgl_reset_terminal_modes()
 {
-	printf(
-		"\033[38;2;255;255;255m"
-		"\033[48;2;0;0;0m");
+	printf("\033[0m");
 }
 // Hides the cursor
 inline void ctgl_hide_cursor()
@@ -225,15 +223,17 @@ void ctgl_draw_line_bresenham(Canvas canvas, Pixel pixel, int x0, int y0, int x1
 // renders the given canvas.
 void ctgl_render_canvas(Canvas canvas)
 {
-	// 33 is the length of the char array required to print one pixel
-	// 33 it the length of the char array required to reset the terminal color and return to a new line
-	// 1 is for the null terminator '\0'
-	// This used to be `char result[33 * canvas.height * canvas.width + 33 * canvas.height];`
+	// 31 is the length of the char array required to print one pixel
+	// 5 it the length of the char array required to reset the terminal color and return to a new line
+	// This used to be `char result[33 * canvas.height * canvas.width + 6 * canvas.height];`
 	// But I changed it to this for one less dereference.
-	char result[33 * canvas.height * (canvas.width + 1)];
+
+	char result[canvas.height * (33 * canvas.width + 6)];
+
 	result[0] = 0;
 	char *end = result;
 	ctgl_reset_cursor_pos();
+
 	for (int i = 0; i < canvas.height; i++)
 	{
 		for (int j = 0; j < canvas.width; j++)
@@ -249,9 +249,8 @@ void ctgl_render_canvas(Canvas canvas)
 				canvas.pixels[i * canvas.width + j].symbol);
 			end = stpcpy(end, temp);
 		}
-		end = stpcpy(end,"\033[38;2;255;255;255m" // reset the foreground color to white
-			"\033[48;2;0;0;0m" // // reset the background color to black
+		end = stpcpy(end,"\033[0m" // resets the terminal modes (colors and styles)
 			"\n"); // new line
 	}
-	printf(result);
+	puts(result);
 }

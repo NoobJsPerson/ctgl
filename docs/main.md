@@ -87,7 +87,7 @@ A function that clears the screen.
 
 ### `void ctgl_reset_cursor_pos();`
 
-A function that resets the cursor position to (0,0) (which usually the top right of the terminal screen)
+A function that resets the cursor position to (1,1) (which usually the top right of the terminal screen)
 
 ### `void ctgl_fill_canvas(Canvas canvas, Pixel pixel);`
 

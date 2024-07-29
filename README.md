@@ -7,7 +7,7 @@ It is still a work in progress but in its current state it has the following fea
 - Adds functions to hide and show the cursor and reset the cursor's position to the beginning
 - Adds portable function to clear the screen
 - Adds functions to manipulate a pixel's foreground color, background color and symbol
-- Has support for 16 colors so you can make colorful masterpieces
+- Has support for True color (24-bit) so you can make colorful masterpieces
 - Implements a basic algorithm to draw lines (more advanced algorithms like Bresenham's will be added soon)
 ## How to use
 You can use the library by cloning the repo and including it in the top of your source C file like in this (this will allow to use ctgl functions and structs in your code)

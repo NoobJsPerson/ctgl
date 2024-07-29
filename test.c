@@ -37,7 +37,7 @@ int main() {
 	
 
 	ctgl_render_canvas(canvas);
-	ctgl_reset_terminal_color();
+	ctgl_reset_terminal_modes();
 	float endTime = (float)clock()/CLOCKS_PER_SEC;
 	printf("Test finished in: %f seconds\n", endTime - startTime);
 }
