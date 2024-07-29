@@ -224,7 +224,7 @@ void ctgl_draw_line_bresenham(Canvas canvas, Pixel pixel, int x0, int y0, int x1
 void ctgl_render_canvas(Canvas canvas)
 {
 	// 31 is the length of the char array required to print one pixel
-	// 5 it the length of the char array required to reset the terminal color and return to a new line
+	// 6 it the length of the char array required to reset the terminal color and return to a new line
 	// This used to be `char result[33 * canvas.height * canvas.width + 6 * canvas.height];`
 	// But I changed it to this for one less dereference.
 
