@@ -27,6 +27,13 @@ inline void ctgl_clear_screen()
 {
 	system("cls");
 }
+
+// Windows doesn't have stpcpy in its C standard. Instead we will define it ourselves
+
+char *stpcpy(char *dest, const char *src) {
+    while ((*dest++ = *src++) != '\0');
+    return --dest;
+}
 #else
 // Resets cursor position to (1,1)
 inline void ctgl_reset_cursor_pos()
@@ -225,6 +232,7 @@ void ctgl_render_canvas(Canvas canvas)
 	// But I changed it to this for one less dereference.
 	char result[33 * canvas.height * (canvas.width + 1)];
 	result[0] = 0;
+	char *end = result;
 	ctgl_reset_cursor_pos();
 	for (int i = 0; i < canvas.height; i++)
 	{
@@ -239,9 +247,9 @@ void ctgl_render_canvas(Canvas canvas)
 				canvas.pixels[i * canvas.width + j].foregroundRGB[0], canvas.pixels[i * canvas.width + j].foregroundRGB[1], canvas.pixels[i * canvas.width + j].foregroundRGB[2],
 				canvas.pixels[i * canvas.width + j].backgroundRGB[0], canvas.pixels[i * canvas.width + j].backgroundRGB[1], canvas.pixels[i * canvas.width + j].backgroundRGB[2],
 				canvas.pixels[i * canvas.width + j].symbol);
-			strcat(result, temp);
+			end = stpcpy(end, temp);
 		}
-		strcat(result,"\033[38;2;255;255;255m" // reset the foreground color to white
+		end = stpcpy(end,"\033[38;2;255;255;255m" // reset the foreground color to white
 			"\033[48;2;0;0;0m" // // reset the background color to black
 			"\n"); // new line
 	}
