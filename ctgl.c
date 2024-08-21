@@ -238,7 +238,7 @@ void ctgl_render_canvas(Canvas canvas)
 	{
 		for (int j = 0; j < canvas.width; j++)
 		{
-			char temp[33] = {0};
+			char temp[34] = {0};
 			sprintf(
 				temp,
 				"\033[38;2;%d;%d;%dm" // set foreground color
