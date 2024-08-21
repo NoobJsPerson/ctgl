@@ -195,7 +195,7 @@ void ctgl_draw_line_bresenham(Canvas canvas, Pixel pixel, int x0, int y0, int x1
 		else ctgl_draw_line_bresenham_low(canvas, pixel, x0, y0, x1, y1);
 	} else {
 		if (y0 > y1) ctgl_draw_line_bresenham_high(canvas, pixel, x1, y1, x0, y0);
-        else ctgl_draw_line_bresenham_high(canvas, pixel, x0, y0, x1, y1);
+	        else ctgl_draw_line_bresenham_high(canvas, pixel, x0, y0, x1, y1);
 	}
 }
 
@@ -238,7 +238,7 @@ void ctgl_render_canvas(Canvas canvas)
 	{
 		for (int j = 0; j < canvas.width; j++)
 		{
-			char temp[32] = {0};
+			char temp[33] = {0};
 			sprintf(
 				temp,
 				"\033[38;2;%d;%d;%dm" // set foreground color
