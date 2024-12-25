@@ -14,6 +14,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#define TEMP_SIZE 33
 // Resets cursor position to (1,1)
 inline void ctgl_reset_cursor_pos()
 {
@@ -35,6 +36,7 @@ char *stpcpy(char *dest, const char *src) {
     return --dest;
 }
 #else
+#define TEMP_SIZE 32
 // Resets cursor position to (1,1)
 inline void ctgl_reset_cursor_pos()
 {
@@ -238,7 +240,7 @@ void ctgl_render_canvas(Canvas canvas)
 	{
 		for (int j = 0; j < canvas.width; j++)
 		{
-			char temp[34] = {0};
+			char temp[TEMP_SIZE] = {0};
 			sprintf(
 				temp,
 				"\033[38;2;%d;%d;%dm" // set foreground color
